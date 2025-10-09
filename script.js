@@ -118,11 +118,15 @@ async function cargarLibros() {
 
 
 async function enviarISBN(codigo) {
-  const res = await axios.post(
-    "https://biblioteca-back-315x.onrender.com/api/libro",
-    { isbn: codigo },
-    { headers: { "Content-Type": "application/json" } }
-  );
-  return res;    
+  fetch("https://biblioteca-back-315x.onrender.com/api/libro",{
+      method: 'POST',
+      body: JSON.stringify({ isbn: codigo }),
+      headers: { "Content-Type": "application/json" }
+  })
+  .then(response => response.json())
+  .then(json => console.log(json))
+  .catch(err => console.error(err));
+  return response;    
 }
 
+cargarLibros();
