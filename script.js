@@ -110,8 +110,3 @@ async function cargarLibros() {
     lista.appendChild(li);
   });
 }
-
-// ===== Inicializar =====
-window.onload = () => {
-  cargarLibros();
-};
