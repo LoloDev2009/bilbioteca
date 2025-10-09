@@ -100,20 +100,27 @@ function mostrarFormularioManual(isbn) {
 
 // ===== Cargar lista de libros =====
 async function cargarLibros() {
-  const libros = await fetch("https://biblioteca-back-315x.onrender.com/api/libros").then(r => r.json());
-  const lista = document.getElementById("libros");
-  lista.innerHTML = "";
+  const libros = await fetch("https://biblioteca-back-315x.onrender.com/api/libros")
+    .then(r => r.json());
+
+  const tbody = document.querySelector("#libros tbody");
+  tbody.innerHTML = "";
+
   libros.forEach(b => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${b.titulo}</strong><br/>
-      ${b.autor} (${b.año})<br/>
-      <em>${b.editorial}</em>
-      ${b.portada_url ? `<br/><img src="${b.portada_url}" style="width:80px; margin-top:5px;">` : ""}
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${b.portada_url ? `<img src="${b.portada_url}" alt="Portada">` : ""}</td>
+      <td>${b.titulo}</td>
+      <td>${b.autor}</td>
+      <td>${b.editorial}</td>
+      <td>${b.año}</td>
     `;
-    lista.appendChild(li);
+
+    tbody.appendChild(tr);
   });
 }
+
 
 
 async function enviarISBN(codigo) {
