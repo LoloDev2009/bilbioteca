@@ -45,7 +45,7 @@ function iniciarEscaneo() {
 
     // 🔹 Enviar a tu backend (opcional)
     try {
-      const res = await fetch("https://TU_BACKEND.ngrok.io/api/libro", {
+      const res = await fetch("http://wine-corporations.gl.at.ply.gg:25116/api/libro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isbn: codigo }),
