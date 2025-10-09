@@ -85,7 +85,7 @@ function mostrarFormularioManual(isbn) {
       portada_url: document.getElementById("portada").value
     };
 
-    const res = await fetch("/api/libro/manual", {
+    const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro/manual", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(libro)
