@@ -43,7 +43,7 @@ function iniciarEscaneo() {
     const codigo = data.codeResult.code;
     resultado.innerText = `📖 ISBN detectado: ${codigo}`;
     Quagga.stop();
-
+    alert(codigo);
     // 🔹 Enviar a tu backend (opcional)
     try {
       const res = await fetch("http://wine-corporations.gl.at.ply.gg:25116/api/libro", {
