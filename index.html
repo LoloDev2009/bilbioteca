@@ -3,67 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Escanear ISBN - Mi Biblioteca</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      background: #f9f9f9;
-    }
-    #contenedor {
-      margin-top: 20px;
-    }
-    #video {
-      width: 90%;
-      max-width: 400px;
-      border: 3px solid #333;
-      border-radius: 10px;
-    }
-    #resultado {
-      font-size: 1.2em;
-      margin-top: 20px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+  <title>Mi Biblioteca</title>
+  <!-- Conectar CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- QuaggaJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-  <h1>📚 Escáner ISBN</h1>
-  <div id="contenedor">
-    <video id="video"></video>
-    <div id="resultado">Esperando escaneo...</div>
-    <button id="btnEscanear">Iniciar escaneo</button>
-    <button id="btnDetener">Detener</button>
+
+  <h1>📚 Mi Biblioteca</h1>
+
+  <!-- Contenedor del video del escáner -->
+  <div id="video-container">
+    <div id="video"></div>
   </div>
 
-  
+  <!-- Botones -->
+  <button id="btnEscanear">Escanear ISBN</button>
+  <button id="btnDetener">Detener Escaneo</button>
 
+  <!-- Resultado del escaneo -->
+  <div id="resultado"></div>
+  <pre id="consola"></pre>
 
-
-  <h2>Cargar libro manualmente</h2>
-  <form id="manualForm" style="display:none;">
-    <input type="text" id="isbn" placeholder="ISBN" readonly />
-    <input type="text" id="titulo" placeholder="Título" required />
-    <input type="text" id="autor" placeholder="Autor" required />
-    <input type="text" id="editorial" placeholder="Editorial" />
-    <input type="text" id="anio" placeholder="Año" />
-    <input type="text" id="portada" placeholder="URL Portada" />
-    <button type="submit">Guardar libro</button>
+  <!-- Formulario manual -->
+  <form id="manualForm">
+    <input type="text" id="isbn" placeholder="ISBN" readonly>
+    <input type="text" id="titulo" placeholder="Título">
+    <input type="text" id="autor" placeholder="Autor">
+    <input type="text" id="editorial" placeholder="Editorial">
+    <input type="text" id="anio" placeholder="Año">
+    <input type="text" id="portada" placeholder="URL portada">
+    <button type="submit">Agregar Libro</button>
   </form>
 
-  <h2>Lista de libros</h2>
+  <!-- Lista de libros -->
   <ul id="libros"></ul>
 
-  <div id="consola"></div>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-<!-- QuaggaJS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+  <!-- Conectar JS -->
   <script src="script.js"></script>
 </body>
 </html>
