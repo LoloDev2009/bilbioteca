@@ -52,10 +52,10 @@ function iniciarEscaneo() {
         body: JSON.stringify({ isbn: codigo }),
       });
       const json = await res.json();
-      consola.innerText("Respuesta del servidor:", json);
+      alert("Respuesta del servidor:", json);
       if (json) mostrarFormularioManual(codigo);
     } catch (e) {
-      console.warn("No se pudo conectar al backend:", e);
+      alert("No se pudo conectar al backend:", e);
     }
   });
 }
