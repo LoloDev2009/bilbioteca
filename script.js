@@ -39,26 +39,25 @@ function iniciarEscaneo() {
     }
   );
 
-  Quagga.onDetected(async (data) => {
+    Quagga.onDetected(async (data) => {
     const codigo = data.codeResult.code;
     resultado.innerText = `📖 ISBN detectado: ${codigo}`;
     Quagga.stop();
-    alert(codigo);
 
     try {
-      const res = await enviarISBN(codigo); // ✅ Usar  await
-      console.log("Respuesta del servidor:", res.data);
+      const libro = await enviarISBN(codigo);
 
-      if (res.data.manual) {
-        mostrarFormularioManual(codigo);
+      if (libro.manual) {
+        mostrarFormularioManual(codigo); // Si Google Books no devuelve info
       } else {
-        alert(`Libro agregado: ${res.data.titulo}`);
+        alert(`Libro agregado: ${libro.titulo}`);
+        cargarLibros(); // Actualiza la lista de libros en pantalla
       }
     } catch (e) {
-      alert("Error al enviar ISBN:", e);
-      alert("No se pudo conectar al backend.");
+      alert("No se pudo conectar al backend");
     }
   });
+
 
 
 }
@@ -118,15 +117,21 @@ async function cargarLibros() {
 
 
 async function enviarISBN(codigo) {
-  fetch("https://biblioteca-back-315x.onrender.com/api/libro",{
-      method: 'POST',
-      body: JSON.stringify({ isbn: codigo }),
-      headers: { "Content-Type": "application/json" }
-  })
-  .then(response => response.json())
-  .then(json => console.log(json))
-  .catch(err => console.error(err));
-  return response;    
+  try {
+    const response = await fetch("https://biblioteca-back-315x.onrender.com/api/libro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isbn: codigo })
+    });
+
+    const json = await response.json();
+    console.log(json);
+    return json; // devuelve la info del libro
+  } catch (err) {
+    console.error("Error al conectar con el backend:", err);
+    throw err; // propaga el error para manejarlo donde se llama
+  }
 }
+
 
 cargarLibros();
