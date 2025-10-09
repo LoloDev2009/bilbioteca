@@ -101,7 +101,7 @@ function mostrarFormularioManual(isbn) {
 
 // ===== Cargar lista de libros =====
 async function cargarLibros() {
-  const libros = await fetch("/api/libros").then(r => r.json());
+  const libros = await fetch("https://biblioteca-back-315x.onrender.com/api/libros").then(r => r.json());
   const lista = document.getElementById("libros");
   lista.innerHTML = "";
   libros.forEach(b => {
@@ -116,9 +116,10 @@ async function cargarLibros() {
   });
 }
 
+
 async function enviarISBN(codigo) {
   const res = await axios.post(
-    "http://wine-corporations.gl.at.ply.gg:25116/api/libro",
+    "https://biblioteca-back-315x.onrender.com/api/libro",
     { isbn: codigo },
     { headers: { "Content-Type": "application/json" } }
   );
