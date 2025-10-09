@@ -46,11 +46,7 @@ function iniciarEscaneo() {
     alert(codigo);
     // 🔹 Enviar a tu backend (opcional)
     try {
-      const res = await fetch("http://wine-corporations.gl.at.ply.gg:25116/api/libro", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isbn: codigo }),
-      });
+      const res = enviarISBN(codigo)
       const json = await res.json();
       alert("Respuesta del servidor:", json);
       if (json) mostrarFormularioManual(codigo);
@@ -112,3 +108,13 @@ async function cargarLibros() {
     lista.appendChild(li);
   });
 }
+
+async function enviarISBN(codigo) {
+  const res = await axios.post(
+    "http://wine-corporations.gl.at.ply.gg:25116/api/libro",
+    { isbn: codigo },
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return res;    
+}
+
