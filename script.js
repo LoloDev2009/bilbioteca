@@ -44,18 +44,18 @@ function iniciarEscaneo() {
     resultado.innerText = `📖 ISBN detectado: ${codigo}`;
     Quagga.stop();
     alert(codigo);
-  
+
     try {
       const res = await enviarISBN(codigo); // ✅ Usar  await
       console.log("Respuesta del servidor:", res.data);
-      
+
       if (res.data.manual) {
         mostrarFormularioManual(codigo);
       } else {
         alert(`Libro agregado: ${res.data.titulo}`);
       }
     } catch (e) {
-      console.error("Error al enviar ISBN:", e);
+      alert("Error al enviar ISBN:", e);
       alert("No se pudo conectar al backend.");
     }
   });
