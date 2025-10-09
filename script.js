@@ -3,6 +3,7 @@
 const btnEscanear = document.getElementById("btnEscanear");
 const btnDetener = document.getElementById("btnDetener");
 const resultado = document.getElementById("resultado");
+const consola = document.getElementById("consola");
 
 btnEscanear.addEventListener("click", () => {
   iniciarEscaneo();
@@ -51,7 +52,8 @@ function iniciarEscaneo() {
         body: JSON.stringify({ isbn: codigo }),
       });
       const json = await res.json();
-      console.log("Respuesta del servidor:", json);
+      consola.innerText("Respuesta del servidor:", json);
+      if (json) mostrarFormularioManual(codigo);
     } catch (e) {
       console.warn("No se pudo conectar al backend:", e);
     }
