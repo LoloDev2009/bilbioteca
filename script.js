@@ -85,7 +85,7 @@ function mostrarFormularioManual(isbn) {
       portada_url: document.getElementById("portada").value
     };
 
-    const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro/manual", {
+    const res = await fetch("http://http://wine-corporations.gl.at.ply.gg:25116/api/libro/manual", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(libro)
@@ -100,7 +100,7 @@ function mostrarFormularioManual(isbn) {
 
 // ===== Cargar lista de libros =====
 async function cargarLibros() {
-  const libros = await fetch("https://biblioteca-back-315x.onrender.com/api/libros")
+  const libros = await fetch("http://http://wine-corporations.gl.at.ply.gg:25116/api/libros")
     .then(r => r.json());
 
   const tbody = document.querySelector("#libros tbody");
@@ -125,7 +125,7 @@ async function cargarLibros() {
 
 async function enviarISBN(codigo) {
   try {
-    const response = await fetch("https://biblioteca-back-315x.onrender.com/api/libro", {
+    const response = await fetch("http://http://wine-corporations.gl.at.ply.gg:25116/api/libro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ isbn: codigo })
