@@ -99,27 +99,54 @@ function mostrarFormularioManual(isbn) {
 }
 
 // ===== Cargar lista de libros =====
+let todosLosLibros = []; // se guarda la lista completa
+
 async function cargarLibros() {
-  const libros = await fetch("https://biblioteca-back-315x.onrender.com/api/libros")
-    .then(r => r.json());
+  const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libros");
+  todosLosLibros = await res.json();
+  mostrarLibros(todosLosLibros);
+}
 
-  const tbody = document.querySelector("#libros tbody");
-  tbody.innerHTML = "";
-
-  libros.forEach(b => {
-    const tr = document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${b.portada_url ? `<img src="${b.portada_url}" alt="Portada">` : ""}</td>
-      <td>${b.titulo}</td>
-      <td>${b.autor}</td>
-      <td>${b.editorial}</td>
-      <td>${b.año}</td>
+// Mostrar libros (filtrados u ordenados)
+function mostrarLibros(lista) {
+  const contenedor = document.getElementById("libros");
+  contenedor.innerHTML = "";
+  lista.forEach(b => {
+    const li = document.createElement("li");
+    li.className = "libro-item";
+    li.innerHTML = `
+      <strong>${b.titulo}</strong><br/>
+      ${b.autor} (${b.año})<br/>
+      <em>${b.editorial}</em>
+      ${b.portada_url ? `<br/><img src="${b.portada_url}" style="width:80px; margin-top:5px;">` : ""}
     `;
-
-    tbody.appendChild(tr);
+    contenedor.appendChild(li);
   });
 }
+
+// Filtros interactivos
+document.getElementById("buscador").addEventListener("input", filtrarYOrdenar);
+document.getElementById("ordenarPor").addEventListener("change", filtrarYOrdenar);
+
+function filtrarYOrdenar() {
+  const texto = document.getElementById("buscador").value.toLowerCase();
+  const criterio = document.getElementById("ordenarPor").value;
+
+  let lista = todosLosLibros.filter(
+    b =>
+      b.titulo.toLowerCase().includes(texto) ||
+      b.autor.toLowerCase().includes(texto)
+  );
+
+  lista.sort((a, b) => {
+    if (a[criterio] < b[criterio]) return -1;
+    if (a[criterio] > b[criterio]) return 1;
+    return 0;
+  });
+
+  mostrarLibros(lista);
+}
+
 
 
 

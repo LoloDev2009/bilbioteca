@@ -37,7 +37,14 @@
     <button type="submit">Agregar Libro</button>
   </form>
 
-  <!-- Lista de libros -->
+  <div class="filtros">
+    <input type="text" id="buscador" placeholder="Buscar por título o autor...">
+    <select id="ordenarPor">
+      <option value="titulo">Ordenar por título</option>
+      <option value="autor">Ordenar por autor</option>
+      <option value="año">Ordenar por año</option>
+    </select>
+  </div>
   <!-- Lista de libros en tabla -->
     <table id="libros">
       <thead>
