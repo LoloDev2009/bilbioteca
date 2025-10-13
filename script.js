@@ -109,20 +109,23 @@ async function cargarLibros() {
 
 // Mostrar libros (filtrados u ordenados)
 function mostrarLibros(lista) {
-  const contenedor = document.getElementById("libros");
-  contenedor.innerHTML = "";
+  const tbody = document.getElementById("libros");
+  tbody.innerHTML = "";
+  
   lista.forEach(b => {
-    const li = document.createElement("li");
-    li.className = "libro-item";
-    li.innerHTML = `
-      <strong>${b.titulo}</strong><br/>
-      ${b.autor} (${b.año})<br/>
-      <em>${b.editorial}</em>
-      ${b.portada_url ? `<br/><img src="${b.portada_url}" style="width:80px; margin-top:5px;">` : ""}
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td data-label="Portada">${b.portada_url ? `<img src="${b.portada_url}" class="portada">` : "—"}</td>
+      <td data-label="Título">${b.titulo}</td>
+      <td data-label="Autor">${b.autor}</td>
+      <td data-label="Editorial">${b.editorial}</td>
+      <td data-label="Año">${b.año}</td>
+      <td data-label="ISBN">${b.isbn}</td>
     `;
-    contenedor.appendChild(li);
+    tbody.appendChild(fila);
   });
 }
+
 
 // Filtros interactivos
 document.getElementById("buscador").addEventListener("input", filtrarYOrdenar);

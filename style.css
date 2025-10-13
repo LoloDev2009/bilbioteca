@@ -181,3 +181,67 @@ button:hover {
   background-color: white;
   cursor: pointer;
 }
+
+.tabla-contenedor {
+  overflow-x: auto;
+  margin: 20px auto;
+  width: 95%;
+  max-width: 900px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background: #fff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Segoe UI", sans-serif;
+}
+
+thead {
+  background-color: #0077cc;
+  color: white;
+}
+
+th, td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: #f4f8ff;
+  transition: background-color 0.2s;
+}
+
+img.portada {
+  width: 50px;
+  height: auto;
+  border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  thead {
+    display: none;
+  }
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  td {
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #0077cc;
+  }
+}
