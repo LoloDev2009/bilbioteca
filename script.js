@@ -115,7 +115,7 @@ function mostrarLibros(lista) {
   lista.forEach(b => {
     const fila = document.createElement("tr");
     fila.innerHTML = `
-      <td data-label="Portada">${b.portada_url ? `<img src="${b.portada_url}" class="portada">` : "—"}</td>
+      <td data-label="Portada">${b.portada_url ? `<img src="${b.portada_url}" class="portada">` : `<img src="https://cdn-icons-png.flaticon.com/512/29/29302.png" class="portada">`}</td>
       <td data-label="Título">${b.titulo}</td>
       <td data-label="Autor">${b.autor}</td>
       <td data-label="Editorial">${b.editorial}</td>
