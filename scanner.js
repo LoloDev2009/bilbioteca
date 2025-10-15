@@ -138,6 +138,7 @@ function mostrarEdicionLibro(libro) {
 }
 
 document.getElementById("btnGuardarEdicion").addEventListener("click", async () => {
+  alert('Boton pRESIONADO')
   const libroEditado = {
     isbn: document.getElementById("edit-isbn").value,
     titulo: document.getElementById("edit-titulo").value,
