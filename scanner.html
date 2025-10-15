@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escanear ISBN</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📷 Escanear ISBN</h1>
+
+  <div id="video-container">
+    <video id="video" autoplay></video>
+  </div>
+
+  <button id="btnEscanear">Iniciar cámara</button>
+  <button id="btnDetener">Detener cámara</button>
+
+  <div id="resultado"></div>
+  <div id="consola"></div>
+
+  <form id="manualForm">
+    <input type="text" id="isbn" placeholder="ISBN" readonly>
+    <input type="text" id="titulo" placeholder="Título">
+    <input type="text" id="autor" placeholder="Autor">
+    <input type="text" id="editorial" placeholder="Editorial">
+    <input type="text" id="anio" placeholder="Año">
+    <input type="text" id="portada" placeholder="URL portada">
+    <button type="submit">Agregar Libro</button>
+  </form>
+
+  <a href="index.html">
+    <button>Volver a la Biblioteca 📚</button>
+  </a>
+
+  <script src="scanner.js"></script>
+</body>
+</html>

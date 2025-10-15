@@ -245,3 +245,9 @@ img.portada {
     color: #0077cc;
   }
 }
+
+.contador {
+  font-weight: bold;
+  margin: 10px 0;
+  color: #333;
+}

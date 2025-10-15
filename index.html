@@ -3,68 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi Biblioteca</title>
-  <!-- Conectar CSS -->
+  <title>Biblioteca</title>
   <link rel="stylesheet" href="style.css">
-  <!-- QuaggaJS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-
-  <h1>📚 Mi Biblioteca</h1>
-
-  <!-- Contenedor del video del escáner -->
-  <div id="video-container">
-    <div id="video"></div>
-  </div>
-
-  <!-- Botones -->
-  <button id="btnEscanear">Escanear ISBN</button>
-  <button id="btnDetener">Detener Escaneo</button>
-
-  <!-- Resultado del escaneo -->
-  <div id="resultado"></div>
-  <pre id="consola"></pre>
-
-  <!-- Formulario manual -->
-  <form id="manualForm">
-    <input type="text" id="isbn" placeholder="ISBN" readonly>
-    <input type="text" id="titulo" placeholder="Título">
-    <input type="text" id="autor" placeholder="Autor">
-    <input type="text" id="editorial" placeholder="Editorial">
-    <input type="text" id="anio" placeholder="Año">
-    <input type="text" id="portada" placeholder="URL portada">
-    <button type="submit">Agregar Libro</button>
-  </form>
+  <h1>📚 Biblioteca</h1>
 
   <div class="filtros">
-    <input type="text" id="buscador" placeholder="Buscar por título o autor...">
+    <input type="text" id="buscador" placeholder="Buscar por título, autor o editorial...">
     <select id="ordenarPor">
       <option value="titulo">Ordenar por título</option>
       <option value="autor">Ordenar por autor</option>
       <option value="año">Ordenar por año</option>
     </select>
+    <p class="contador" id="contador"></p>
   </div>
-  <!-- Lista de libros en tabla -->
-    <div class="tabla-contenedor">
-  <table id="tablaLibros">
-    <thead>
-      <tr>
-        <th>Portada</th>
-        <th>Título</th>
-        <th>Autor</th>
-        <th>Editorial</th>
-        <th>Año</th>
-        <th>ISBN</th>
-      </tr>
-    </thead>
-    <tbody id="libros"></tbody>
-  </table>
-</div>
 
+  
 
+  <div class="tabla-contenedor">
+    <table id="tablaLibros">
+      <thead>
+        <tr>
+          <th>Portada</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Editorial</th>
+          <th>Año</th>
+          <th>ISBN</th>
+        </tr>
+      </thead>
+      <tbody id="libros"></tbody>
+    </table>
+  </div>
 
-  <!-- Conectar JS -->
+  <a href="scanner.html">
+    <button>Ir al Escáner 📷</button>
+  </a>
+
   <script src="script.js"></script>
 </body>
 </html>

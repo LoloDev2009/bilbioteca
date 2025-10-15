@@ -1,103 +1,3 @@
-// ===== script.js =====
-
-const btnEscanear = document.getElementById("btnEscanear");
-const btnDetener = document.getElementById("btnDetener");
-const resultado = document.getElementById("resultado");
-const consola = document.getElementById("consola");
-
-btnEscanear.addEventListener("click", () => {
-  iniciarEscaneo();
-});
-
-btnDetener.addEventListener("click", () => {
-  detenerEscaneo();
-});
-
-function iniciarEscaneo() {
-  Quagga.init(
-    {
-      inputStream: {
-        name: "Live",
-        type: "LiveStream",
-        target: document.querySelector("#video"),
-        constraints: {
-          facingMode: "environment", // Usa la cámara trasera
-        },
-      },
-      decoder: {
-        readers: ["ean_reader"], // EAN-13 es el estándar de ISBN
-      },
-    },
-    function (err) {
-      if (err) {
-        console.error(err);
-        alert("Error al iniciar la cámara.");
-        return;
-      }
-      Quagga.start();
-      resultado.innerText = "Escaneando...";
-    }
-  );
-
-    Quagga.onDetected(async (data) => {
-    const codigo = data.codeResult.code;
-    resultado.innerText = `📖 ISBN detectado: ${codigo}`;
-    Quagga.stop();
-
-    try {
-      const libro = await enviarISBN(codigo);
-
-      if (libro.manual) {
-        mostrarFormularioManual(codigo); // Si Google Books no devuelve info
-      } else {
-        alert(`Libro agregado: ${libro.titulo}`);
-        cargarLibros(); // Actualiza la lista de libros en pantalla
-      }
-    } catch (e) {
-      alert("No se pudo conectar al backend");
-    }
-  });
-
-
-
-}
-
-function detenerEscaneo() {
-  Quagga.stop();
-  resultado.innerText = "Escaneo detenido.";
-}
-
-
-// ===== Función para mostrar formulario manual =====
-function mostrarFormularioManual(isbn) {
-  const form = document.getElementById("manualForm");
-  form.style.display = "block";
-  document.getElementById("isbn").value = isbn;
-
-  form.onsubmit = async (e) => {
-    e.preventDefault();
-    const libro = {
-      isbn: document.getElementById("isbn").value,
-      titulo: document.getElementById("titulo").value,
-      autor: document.getElementById("autor").value,
-      editorial: document.getElementById("editorial").value,
-      año: document.getElementById("anio").value,
-      portada_url: document.getElementById("portada").value
-    };
-
-    const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro/manual", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(libro)
-    }).then(r => r.json());
-
-    alert(`Libro agregado manualmente: ${res.titulo}`);
-    form.reset();
-    form.style.display = "none";
-    cargarLibros();
-  };
-}
-
 // ===== Cargar lista de libros =====
 let todosLosLibros = []; // se guarda la lista completa
 
@@ -110,8 +10,12 @@ async function cargarLibros() {
 // Mostrar libros (filtrados u ordenados)
 function mostrarLibros(lista) {
   const tbody = document.getElementById("libros");
+  const contador = document.getElementById("contador");
   tbody.innerHTML = "";
   
+  // Mostrar cantidad de resultados
+  contador.textContent = `${lista.length} libro${lista.length !== 1 ? "s" : ""} encontrado${lista.length !== 1 ? "s" : ""}`;
+
   lista.forEach(b => {
     const fila = document.createElement("tr");
     fila.innerHTML = `
@@ -128,47 +32,39 @@ function mostrarLibros(lista) {
 
 
 // Filtros interactivos
-document.getElementById("buscador").addEventListener("input", filtrarYOrdenar);
-document.getElementById("ordenarPor").addEventListener("change", filtrarYOrdenar);
+document.getElementById("buscador").addEventListener("input", filtrarLibros);
+document.getElementById("ordenarPor").addEventListener("change", filtrarLibros);
 
-function filtrarYOrdenar() {
-  const texto = document.getElementById("buscador").value.toLowerCase();
-  const criterio = document.getElementById("ordenarPor").value;
+function normalizarTexto(texto) {
+  return texto
+    .toString()
+    .normalize("NFD") // separa las tildes de las letras
+    .replace(/[\u0300-\u036f]/g, "") // elimina las tildes
+    .replace(/[^\w\s]/gi, "") // elimina cualquier carácter no alfanumérico (signos, puntuación, etc.)
+    .toLowerCase()
+    .trim();
+}
 
-  let lista = todosLosLibros.filter(
-    b =>
-      b.titulo.toLowerCase().includes(texto) ||
-      b.autor.toLowerCase().includes(texto)
+
+function filtrarLibros() {
+  const input = normalizarTexto(document.getElementById("buscador").value);
+  
+  const librosFiltrados = todosLosLibros.filter(libro =>
+    normalizarTexto(libro.titulo).includes(input) ||
+    normalizarTexto(libro.autor).includes(input) ||
+    normalizarTexto(libro.editorial).includes(input)
   );
 
-  lista.sort((a, b) => {
-    if (a[criterio] < b[criterio]) return -1;
-    if (a[criterio] > b[criterio]) return 1;
-    return 0;
+  // ordenar los resultados filtrados con el mismo criterio actual
+  const criterio = document.getElementById("ordenarPor").value;
+  const librosOrdenados = [...librosFiltrados].sort((a, b) => {
+    let valorA = normalizarTexto(a[criterio]?.toString() || "");
+    let valorB = normalizarTexto(b[criterio]?.toString() || "");
+    if (criterio === "año") return (parseInt(valorA) || 0) - (parseInt(valorB) || 0);
+    return valorA.localeCompare(valorB);
   });
 
-  mostrarLibros(lista);
+  mostrarLibros(librosOrdenados);
 }
-
-
-
-
-async function enviarISBN(codigo) {
-  try {
-    const response = await fetch("https://biblioteca-back-315x.onrender.com/api/libro", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isbn: codigo })
-    });
-
-    const json = await response.json();
-    console.log(json);
-    return json; // devuelve la info del libro
-  } catch (err) {
-    console.error("Error al conectar con el backend:", err);
-    throw err; // propaga el error para manejarlo donde se llama
-  }
-}
-
 
 cargarLibros();
