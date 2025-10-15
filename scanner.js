@@ -45,14 +45,7 @@ function iniciarEscaneo() {
     Quagga.stop();
 
     try {
-      const libro = await enviarISBN(codigo);
-
-      if (libro.manual) {
-        mostrarFormularioManual(codigo); // Si Google Books no devuelve info
-      } else {
-        alert(`Libro agregado: ${libro.titulo}`);
-        cargarLibros(); // Actualiza la lista de libros en pantalla
-      }
+      await procesarISBN(codigo);
     } catch (e) {
       alert(e);
     }
@@ -98,19 +91,73 @@ function mostrarFormularioManual(isbn) {
   };
 }
 
-async function enviarISBN(codigo) {
+async function procesarISBN(codigo) {
   try {
-    const response = await fetch("https://biblioteca-back-315x.onrender.com/api/libro", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isbn: codigo })
-    });
+    // 1️⃣ Preguntar al backend si el libro ya existe
+    const res = await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/${codigo}`);
+    const libro = await res.json();
 
-    const json = await response.json();
-    console.log(json);
-    return json; // devuelve la info del libro
+    if (libro && libro.id) {
+      // 📖 Libro ya existe → mostrar formulario de edición
+      mostrarEdicionLibro(libro);
+    } else {
+      // ➕ Libro nuevo → enviar al backend para agregar
+      const addRes = await fetch("https://biblioteca-back-315x.onrender.com/api/libro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isbn: codigo })
+      });
+
+      const nuevoLibro = await addRes.json();
+
+      if (nuevoLibro.manual) {
+        // Si Google Books no encontró info, mostrar formulario manual
+        mostrarFormularioManual(codigo);
+      } else {
+        alert(`Libro agregado: ${nuevoLibro.titulo}`);
+        cargarLibros();
+      }
+    }
+
   } catch (err) {
-    console.error("Error al conectar con el backend:", err);
-    throw err; // propaga el error para manejarlo donde se llama
+    console.error("Error al procesar ISBN:", err);
+    alert("No se pudo procesar el ISBN.");
   }
 }
+
+function mostrarEdicionLibro(libro) {
+  const form = document.getElementById("editarForm");
+  form.style.display = "block";
+
+  document.getElementById("edit-isbn").value = libro.isbn;
+  document.getElementById("edit-titulo").value = libro.titulo;
+  document.getElementById("edit-autor").value = libro.autor;
+  document.getElementById("edit-editorial").value = libro.editorial;
+  document.getElementById("edit-anio").value = libro.año;
+  document.getElementById("edit-portada").value = libro.portada_url;
+}
+
+document.getElementById("btnGuardarEdicion").addEventListener("click", async () => {
+  const libroEditado = {
+    isbn: document.getElementById("edit-isbn").value,
+    titulo: document.getElementById("edit-titulo").value,
+    autor: document.getElementById("edit-autor").value,
+    editorial: document.getElementById("edit-editorial").value,
+    año: document.getElementById("edit-anio").value,
+    portada_url: document.getElementById("edit-portada").value
+  };
+
+  try {
+    const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro/editar", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(libroEditado)
+    });
+    const json = await res.json();
+    alert(`Libro actualizado: ${json.titulo}`);
+    cargarLibros();
+    form.style.display = "none";
+  } catch (err) {
+    console.error("Error al actualizar libro:", err);
+  }
+});
