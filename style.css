@@ -80,7 +80,7 @@ button:hover {
 }
 
 /* ===== Formulario manual ===== */
-#manualForm {
+#manualForm , #editarForm{
   display: none;
   background: white;
   padding: 15px 20px;
@@ -91,7 +91,7 @@ button:hover {
   margin-bottom: 20px;
 }
 
-#manualForm input {
+#manualForm input, #editarForm input {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;

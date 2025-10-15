@@ -158,6 +158,6 @@ document.getElementById("btnGuardarEdicion").addEventListener("click", async () 
     cargarLibros();
     form.style.display = "none";
   } catch (err) {
-    console.error("Error al actualizar libro:", err);
+    alert(err);
   }
 });
