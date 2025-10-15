@@ -51,7 +51,6 @@ function iniciarEscaneo() {
         mostrarFormularioManual(codigo); // Si Google Books no devuelve info
       } else {
         alert(`Libro agregado: ${libro.titulo}`);
-        cargarLibros(); // Actualiza la lista de libros en pantalla
       }
     } catch (e) {
       alert(e);
