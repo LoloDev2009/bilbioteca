@@ -138,7 +138,8 @@ function mostrarEdicionLibro(libro) {
 }
 
 document.getElementById("btnGuardarEdicion").addEventListener("click", async () => {
-  alert('Boton pRESIONADO')
+  const form = document.getElementById("editarForm");
+  
   const libroEditado = {
     isbn: document.getElementById("edit-isbn").value,
     titulo: document.getElementById("edit-titulo").value,
@@ -156,7 +157,6 @@ document.getElementById("btnGuardarEdicion").addEventListener("click", async () 
     });
     const json = await res.json();
     alert(`Libro actualizado: ${json.titulo}`);
-    cargarLibros();
     form.style.display = "none";
   } catch (err) {
     alert(err);
