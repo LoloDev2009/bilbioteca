@@ -6,7 +6,7 @@ const resultado = document.getElementById("resultado");
 const consola = document.getElementById("consola");
 
 btnEscanear.addEventListener("click", () => {
-  gi
+  iniciarEscaneo();
 });
 
 btnDetener.addEventListener("click", () => {
@@ -45,7 +45,7 @@ function iniciarEscaneo() {
     Quagga.stop();
 
     try {
-      const libro = await procesarISBN(codigo);
+      await procesarISBN(codigo);
     } catch (e) {
       alert(e);
     }
