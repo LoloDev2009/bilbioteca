@@ -54,7 +54,7 @@ function iniciarEscaneo() {
         cargarLibros(); // Actualiza la lista de libros en pantalla
       }
     } catch (e) {
-      alert("No se pudo conectar al backenda");
+      alert(e);
     }
   });
 
