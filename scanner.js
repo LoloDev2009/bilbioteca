@@ -45,7 +45,13 @@ function iniciarEscaneo() {
     Quagga.stop();
 
     try {
-      await procesarISBN(codigo);
+      const libro = await enviarISBN(codigo);
+
+      if (libro.manual) {
+        mostrarFormularioManual(codigo); // Si Google Books no devuelve info
+      } else {
+        alert(`Libro agregado: ${libro.titulo}`);
+      }
     } catch (e) {
       alert(e);
     }
