@@ -6,7 +6,7 @@ const resultado = document.getElementById("resultado");
 const consola = document.getElementById("consola");
 
 btnEscanear.addEventListener("click", () => {
-  iniciarEscaneo();
+  gi
 });
 
 btnDetener.addEventListener("click", () => {
@@ -146,7 +146,8 @@ document.getElementById("btnGuardarEdicion").addEventListener("click", async () 
     autor: document.getElementById("edit-autor").value,
     editorial: document.getElementById("edit-editorial").value,
     año: document.getElementById("edit-anio").value,
-    portada_url: document.getElementById("edit-portada").value
+    portada_url: document.getElementById("edit-portada").value,
+    edited: "True"
   };
 
   try {
