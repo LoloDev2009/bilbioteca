@@ -126,6 +126,8 @@ async function procesarISBN(codigo) {
 }
 
 function mostrarEdicionLibro(libro) {
+  const formAgregar = document.getElementById("manualForm");
+  formAgregar.style.display = "none";
   const form = document.getElementById("editarForm");
   form.style.display = "block";
 
