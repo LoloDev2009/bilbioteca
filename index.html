@@ -1,46 +1,135 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biblioteca</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca | Gestión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
 </head>
 <body>
-  <h1>📚 Biblioteca</h1>
 
-  <div class="filtros">
-    <input type="text" id="buscador" placeholder="Buscar por título, autor o editorial...">
-    <select id="ordenarPor">
-      <option value="titulo">Ordenar por título</option>
-      <option value="autor">Ordenar por autor</option>
-      <option value="año">Ordenar por año</option>
-    </select>
-    <p class="contador" id="contador"></p>
-  </div>
+<header class="app-header">
+    <h1 class="app-title">Gestión de Biblioteca</h1>
+</header>
 
-  
+<main class="container">
 
-  <div class="tabla-contenedor">
-    <table id="tablaLibros">
-      <thead>
-        <tr>
-          <th>Portada</th>
-          <th>Título</th>
-          <th>Autor</th>
-          <th>Editorial</th>
-          <th>Año</th>
-          <th>ISBN</th>
-        </tr>
-      </thead>
-      <tbody id="libros"></tbody>
-    </table>
-  </div>
+    <!-- Barra de controles -->
+    <section class="controls">
+        <div class="controls-left">
+            <input type="search" class="input" placeholder="Buscar libro..." aria-label="Buscar libro" id="buscador">
+            <p class="contador" id="contador"></p>
+        </div>
 
-  <a href="scanner.html">
-    <button>Ir al Escáner 📷</button>
-  </a>
+        <div class="controls-right">
+            <span class="contador"></span>
+            <button class="btn btn-primary" id="addBook">Gestionar libro</button>
+        </div>
+    </section>
 
-  <script src="script.js"></script>
+    <!-- Tabla de libros -->
+    <section class="table-wrapper">
+        <table class="books-table">
+            <thead>
+                <tr>
+                    <th>Portada</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Editorial</th>
+                    <th>ISBN</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="libros"></tbody>
+        </table>
+    </section>
+
+</main>
+
+<!-- Modal agregar libro -->
+<section class="modal modal-hidden" aria-hidden="true" id="manualForm">
+    <div class="modal-content">
+        <header class="modal-header">
+            <h2 id="tituloForm">Agregar libro</h2>
+        </header>
+
+        <form class="form" id="añadirLibro">
+                
+            <!-- ISBN + Buscar -->
+            <div class="isbn-search">
+                <label class="isbn-field">
+                    ISBN
+                    <input type="number" min="0" class="input" id="isbnBuscador">
+                </label>
+            
+                <button type="button" class="btn btn-primary isbn-btn" id="btnBuscarISBN">
+                    Buscar
+                </button>
+            </div>
+            
+            <div id="form-grid" >
+                <hr class="form-divider" >
+                <!-- Resto del formulario -->
+                <div class="form-grid" >
+                    <label>
+                        Título
+                        <input type="text"  id="formTitulo" class="input     manualForm"     placeholder="Titulo" readonly>
+                    </label>
+                
+                    <label>
+                        Autor
+                        <input type="text"  id="formAutor" class="input  manualForm"  placeholder="Autor"readonly>
+                    </label>
+                
+                    <label>
+                        Editorial
+                        <input type="text"  class="input manualForm"     id="formEditorial"  placeholder="Editorial"  readonly>
+                    </label>
+                
+                    <label>
+                        Portada (URL)
+                        <input type="url" class="input  manualForm"  placeholder="URL"id="formUrl"    readonly>
+                    </label>
+                
+                    <label>
+                        Estado
+                        <select class="select manualForm" id="formEstado" disabled>
+                            <option>Disponible</option>
+                            <option>Prestado</option>
+                        </select>
+                    </label>
+                </div>
+                <footer class="modal-footer">
+                    <button type="button" id="btnDel" class="btn btn-danger">Eliminar</button>
+                    <button type="button" id="btnCancel" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </footer>
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<!-- Modal detalle libro -->
+<section class="modal modal-hidden" aria-hidden="true">
+    <div class="modal-content modal-card">
+        <img src="" alt="Portada libro" class="book-cover-lg">
+
+        <div class="book-info">
+            <h3>El nombre del viento</h3>
+            <p class="author">Patrick Rothfuss</p>
+            <p class="description">
+                Una novela de fantasía épica que narra la vida de Kvothe,
+                un personaje legendario lleno de misterio.
+            </p>
+
+            <div class="rating">
+                ★ ★ ★ ★ ★
+            </div>
+        </div>
+    </div>
+</section>
+<script src="{{ url_for('static', filename='script.js')}}"></script>
+
 </body>
 </html>

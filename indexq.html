@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📚 Biblioteca</h1>
+
+  <div class="filtros">
+    <input type="text" id="buscador" placeholder="Buscar por título, autor o editorial...">
+    <select id="ordenarPor">
+      <option value="titulo">Ordenar por título</option>
+      <option value="autor">Ordenar por autor</option>
+      <option value="año">Ordenar por año</option>
+    </select>
+    <p class="contador" id="contador"></p>
+  </div>
+
+  
+
+  <div class="tabla-contenedor">
+    <table id="tablaLibros">
+      <thead>
+        <tr>
+          <th>Portada</th>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Editorial</th>
+          <th>Año</th>
+          <th>ISBN</th>
+        </tr>
+      </thead>
+      <tbody id="libros"></tbody>
+    </table>
+  </div>
+
+  <a href="scanner.html">
+    <button>Ir al Escáner 📷</button>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
