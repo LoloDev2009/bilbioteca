@@ -32,7 +32,7 @@ async function deleteBook() {
   const codigo = document.getElementById("isbnBuscador")
   const isbn = codigo.value
 
-  await fetch(`/api/libro/${isbn}`,{method: "DELETE"});
+  await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/?isbn=${isbn}`,{method: "DELETE"});
 
   pestaña.style.display = "none";
   deshabilitarFormulario()
@@ -51,7 +51,7 @@ async function searchIsbn(){
   const editorial = document.getElementById("formEditorial") 
   const url = document.getElementById("formUrl") 
 
-  const res = await fetch("/api/libro", {
+  const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isbn: codigo.value })
@@ -89,7 +89,7 @@ async function searchIsbn(){
         estado: estado.value
       };
 
-      const res = await fetch("/api/libro/save", {
+      const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro/save", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(libroDevolver)
@@ -161,7 +161,7 @@ function deshabilitarFormulario(){
 let todosLosLibros = []; // se guarda la lista completa
 
 async function cargarLibros() {
-  const res = await fetch("/api/libros");
+  const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libros");
   todosLosLibros = await res.json();
   mostrarLibros(todosLosLibros);
 }
@@ -185,7 +185,7 @@ function mostrarLibros(lista) {
     contador.textContent = `${lista.length} libro${lista.length !== 1 ? "s" : ""} encontrado${lista.length !== 1 ? "s" : ""}`;
 
     fila.innerHTML = `
-      <td data-label="Portada">${b.portada_url ? `<img src="${b.portada_url}" class="portada">` : `<img src="static/29302.png" class="portada">`}</td>
+      <td data-label="Portada">${b.portada_url ? `<img src="${b.portada_url}" class="portada">` : `<img src="29302.png" class="portada">`}</td>
       <td data-label="Título">${b.titulo}</td>
       <td data-label="Autor">${b.autor}</td>
       <td data-label="Editorial">${b.editorial}</td>
