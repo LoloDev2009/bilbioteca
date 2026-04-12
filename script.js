@@ -1,3 +1,35 @@
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, options);
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw data.error; // ← viene del backend nuevo
+  }
+
+  return data;
+}
+
+function handleError(error) {
+  console.error("🔥 Front Error:", error);
+
+  switch (error.code) {
+    case "BOOK_NOT_FOUND":
+      alert("El libro no existe");
+      break;
+
+    case "VALIDATION_ERROR":
+      alert("Datos inválidos");
+      break;
+
+    case "EXTERNAL_API_ERROR":
+      alert("Error consultando Google Books");
+      break;
+
+    default:
+      alert("Error inesperado");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const addBook = document.getElementById("addBook");
   const btnBuscarIsbn = document.getElementById("btnBuscarISBN");
@@ -28,15 +60,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function deleteBook() {
-  const pestaña = document.getElementById("manualForm");
-  const codigo = document.getElementById("isbnBuscador")
-  const isbn = codigo.value
+  try {
+    const isbn = document.getElementById("isbnBuscador").value;
 
-  await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/?isbn=${isbn}`,{method: "DELETE"});
+    await apiFetch(`https://biblioteca-back-315x.onrender.com/api/libro?isbn=${isbn}`, {
+      method: "DELETE"
+    });
 
-  pestaña.style.display = "none";
-  deshabilitarFormulario()
-  cargarLibros()
+    document.getElementById("manualForm").style.display = "none";
+    deshabilitarFormulario();
+    cargarLibros();
+
+  } catch (err) {
+    handleError(err);
+  }
 }
 
 async function searchIsbn(){
