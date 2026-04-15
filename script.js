@@ -229,6 +229,10 @@ function mostrarLibros(lista) {
       <td data-label="ISBN">${b.isbn}</td>
       `+spanEstado
     tbody.appendChild(fila);
+
+    fila.addEventListener("click", () => {
+      mostrarDetalleLibro(b.id);
+    });
   });
 }
 
