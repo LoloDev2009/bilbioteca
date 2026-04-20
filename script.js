@@ -265,3 +265,16 @@ function filtrarLibros() {
 cargarLibros();
 
 
+const openTab = document.getElementById("openCustomTab");
+const modalTab = document.getElementById("customTabModal");
+const closeTab = document.getElementById("closeCustomTab");
+
+if (openTab && modalTab && closeTab) {
+    openTab.addEventListener("click", () => {
+        modalTab.classList.remove("modal-hidden");
+    });
+
+    closeTab.addEventListener("click", () => {
+        modalTab.classList.add("modal-hidden");
+    });
+}

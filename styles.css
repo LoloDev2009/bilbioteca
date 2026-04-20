@@ -276,3 +276,73 @@ label {
 #contador{
     font-weight: bold;
 }
+
+/* Layout con sidebar */
+.layout {
+    margin-left: 220px;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background: white;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.sidebar-header {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebar-item {
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.6rem;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.2s;
+}
+
+.sidebar-item:hover {
+    background: var(--bg);
+}
+
+/* Ajuste header con sidebar */
+.app-header {
+    margin-left: 220px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .layout {
+        margin-left: 0;
+    }
+
+    .app-header {
+        margin-left: 0;
+    }
+}

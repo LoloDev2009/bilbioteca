@@ -6,7 +6,10 @@
     <title>Biblioteca | Gestión</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+<div class="layout">
+    <!-- TODO tu contenido actual (header + main) queda acá adentro -->
 
 <header class="app-header">
     <h1 class="app-title">Gestión de Biblioteca</h1>
@@ -16,7 +19,7 @@
 
     <!-- Barra de controles -->
     <section class="controls">
-        <div class="controls-left">+
+        <div class="controls-left">
             <input type="search" class="input" placeholder="Buscar libro..." aria-label="Buscar libro" id="buscador">
             <p class="contador" id="contador"></p>
         </div>
@@ -45,7 +48,7 @@
     </section>
 
 </main>
-
+</div>
 <!-- Modal agregar libro -->
 <section class="modal modal-hidden" aria-hidden="true" id="manualForm">
     <div class="modal-content">
@@ -129,7 +132,37 @@
         </div>
     </div>
 </section>
+<!-- Modal Sidebar Tab -->
+<section class="modal modal-hidden" id="customTabModal">
+    <div class="modal-content">
+        <header class="modal-header">
+            <h2>Mi pestaña</h2>
+        </header>
+
+        <div class="form">
+            <!-- PERSONALIZÁ ACÁ -->
+            <p>Este es un espacio editable para tu funcionalidad.</p>
+        </div>
+
+        <footer class="modal-footer">
+            <button class="btn btn-secondary" id="closeCustomTab">Cerrar</button>
+        </footer>
+    </div>
+</section>
 <script src="script.js"></script>
 
 </body>
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>Panel</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+        <button class="sidebar-item" id="openCustomTab">
+            ⚙️ Personalizar
+        </button>
+    </nav>
+</aside>
+
 </html>
