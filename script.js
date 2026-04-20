@@ -1,14 +1,48 @@
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, options);
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw data.error; // ← viene del backend nuevo
+  }
+
+  return data;
+}
+
+function handleError(error) {
+  console.error("🔥 Front Error:", error);
+
+  switch (error.code) {
+    case "BOOK_NOT_FOUND":
+      alert("El libro no existe");
+      break;
+
+    case "VALIDATION_ERROR":
+      alert("Datos inválidos");
+      break;
+
+    case "EXTERNAL_API_ERROR":
+      alert("Error consultando Google Books");
+      break;
+
+    default:
+      alert("Error inesperado");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const addBook = document.getElementById("addBook");
   const btnBuscarIsbn = document.getElementById("btnBuscarISBN");
   const btnCancel = document.getElementById("btnCancel");
   const btnDel = document.getElementById("btnDel");
+  const btnEditDetail = document.getElementById("btnEditDetail");
+  const tbody = document.getElementById("libros");
 
   document.getElementById("buscador").addEventListener("input", filtrarLibros);
 
   addBook.addEventListener("click", (e) => {
     const form = document.getElementById("manualForm");
-    form.style.display = "block";
+    form.style.display = "flex";
   })
 
   btnBuscarIsbn.addEventListener("click", (e) =>{
@@ -25,18 +59,46 @@ document.addEventListener("DOMContentLoaded", () => {
     deshabilitarFormulario()
   })
 
+  btnEditDetail.addEventListener("click", (e) =>{
+    editDetail()
+  })
+  let selectedId = null;
+
+  tbody.addEventListener("click", (e) => {
+    const fila = e.target.closest("tr");
+
+    if (!fila) return;
+
+    // limpiar selección previa
+    tbody.querySelectorAll("tr").forEach(f => {
+      f.classList.remove("selected");
+    });
+
+    // marcar nueva
+    fila.classList.add("selected");
+
+    // guardar ID
+    selectedIsbn = fila.dataset.isbn;
+
+    console.log("Libro seleccionado:", selectedIsbn);
+  });
 });
 
 async function deleteBook() {
-  const pestaña = document.getElementById("manualForm");
-  const codigo = document.getElementById("isbnBuscador")
-  const isbn = codigo.value
+  try {
+    const isbn = document.getElementById("isbnBuscador").value;
 
-  await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/?isbn=${isbn}`,{method: "DELETE"});
+    await apiFetch(`https://biblioteca-back-315x.onrender.com/api/libro?isbn=${isbn}`, {
+      method: "DELETE"
+    });
 
-  pestaña.style.display = "none";
-  deshabilitarFormulario()
-  cargarLibros()
+    document.getElementById("manualForm").style.display = "none";
+    deshabilitarFormulario();
+    cargarLibros();
+
+  } catch (err) {
+    handleError(err);
+  }
 }
 
 async function searchIsbn(){
@@ -154,6 +216,24 @@ function deshabilitarFormulario(){
   tituloForm.textContent = "Agregar libro"
 }
 
+async function getDetalleLibro(isbn) {
+  const res = await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/detalle?isbn=${isbn}`);
+  
+  if (!res.ok) {
+    alert("Error al obtener detalles del libro");
+    return null;
+  }
+  
+  return await res.json();
+}
+
+
+
+function mostrarDetalleLibro(isbn) {
+  const libro = getDetalleLibro(isbn);
+  if (!libro) return alert("Libro no encontrado");
+  console.log("Detalle del libro:", libro.isbn);
+}
 
 // ===== NO MODIFICAR CODIGO AL PEDO!! ===
 
@@ -183,7 +263,7 @@ function mostrarLibros(lista) {
     }else{spanEstado = `<td><span class="status status-unaviable">Prestado</span></td>`}
 
     contador.textContent = `${lista.length} libro${lista.length !== 1 ? "s" : ""} encontrado${lista.length !== 1 ? "s" : ""}`;
-
+    fila.dataset.isbn = b.isbn; // guardo el isbn del libro en un atributo data-isbn para usarlo luego
     fila.innerHTML = `
       <td data-label="Portada">${b.portada_url ? `<img src="${b.portada_url}" class="portada">` : `<img src="29302.png" class="portada">`}</td>
       <td data-label="Título">${b.titulo}</td>
@@ -192,6 +272,10 @@ function mostrarLibros(lista) {
       <td data-label="ISBN">${b.isbn}</td>
       `+spanEstado
     tbody.appendChild(fila);
+
+    fila.addEventListener("click", () => {
+      mostrarDetalleLibro(b.id);
+    });
   });
 }
 
