@@ -227,12 +227,24 @@ async function getDetalleLibro(isbn) {
   return await res.json();
 }
 
+async function mostrarDetalleLibro(isbn) {
+  const modal = document.getElementById("bookDetail");
+  var libro = await getDetalleLibro(isbn);
+  libro = libro[0]
 
-
-function mostrarDetalleLibro(isbn) {
-  const libro = getDetalleLibro(isbn);
+  console.log("Detalle del libro:", libro);
   if (!libro) return alert("Libro no encontrado");
-  console.log("Detalle del libro:", libro.isbn);
+
+  modal.querySelector(".book-cover-lg").src = libro.portada_url || "29302.png";
+  modal.querySelector(".book-info h3").textContent = libro.titulo;
+  modal.querySelector(".book-info .author").textContent = libro.autor;
+  modal.querySelector(".book-info .description").textContent = libro.descripcion || "Sin descripción";
+  modal.querySelector(".book-info .pages").innerHTML = `<strong>Páginas:</strong> ${libro.paginas}` || "";
+  modal.querySelector(".book-info .genre").innerHTML = `<strong>Género:</strong> ${libro.genero}` || "";
+  modal.querySelector(".book-info .languaje").innerHTML = `<strong>Idioma:</strong> ${libro.idioma}` || "";
+  modal.classList.remove("modal-hidden");
+
+  
 }
 
 // ===== NO MODIFICAR CODIGO AL PEDO!! ===
@@ -274,7 +286,7 @@ function mostrarLibros(lista) {
     tbody.appendChild(fila);
 
     fila.addEventListener("click", () => {
-      mostrarDetalleLibro(b.id);
+      mostrarDetalleLibro(b.isbn);
     });
   });
 }

@@ -287,7 +287,6 @@ label {
     font-weight: bold;
 }
 
-<<<<<<< HEAD
 /* Layout con sidebar */
 .layout {
     margin-left: 220px;
@@ -356,9 +355,4 @@ label {
     .app-header {
         margin-left: 0;
     }
-=======
-.selected {
-  background-color: #2c3e50;
-  color: white;
->>>>>>> 0cc9cbaf5691f8dc82cf8f3b1edfc29b52033f68
 }
