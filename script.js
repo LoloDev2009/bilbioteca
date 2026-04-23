@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("Libro seleccionado:", selectedIsbn);
   });
+
+cargarSidebar();
+
 });
 
 async function deleteBook() {
@@ -253,7 +256,7 @@ async function mostrarDetalleLibro(isbn) {
 let todosLosLibros = []; // se guarda la lista completa
 
 async function cargarLibros() {
-  const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libros");
+  const res = await fetch("https://biblioteca-back-315x.onrender.com/api/libro/all");
   todosLosLibros = await res.json();
   mostrarLibros(todosLosLibros);
 }
@@ -315,6 +318,23 @@ function filtrarLibros() {
   );
 
   mostrarLibros(librosFiltrados);
+}
+
+function cargarSidebar() {
+  const sidebar = document.querySelector(".sidebar-nav");
+  const opciones = [
+    { nombre: "Biblioteca", id: "biblioteca" },
+    { nombre: "Data", id: "data" },
+    { nombre: "Personalizar", id: "personalizar" }
+  ];
+
+  opciones.forEach(opcion => {
+    const btn = document.createElement("button");
+    btn.classList.add("sidebar-item");
+    btn.id = opcion.id;
+    btn.textContent = opcion.nombre;
+    sidebar.appendChild(btn);
+  });
 }
 
 cargarLibros();
