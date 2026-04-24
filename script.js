@@ -37,6 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnDel = document.getElementById("btnDel");
   const btnEditDetail = document.getElementById("btnEditDetail");
   const tbody = document.getElementById("libros");
+  const exitDetail = document.getElementById("bookDetail");
+
+  exitDetail.addEventListener("dbclick", () => {
+    document.getElementById("bookDetail").classList.add("modal-hidden");
+  });
 
   document.getElementById("buscador").addEventListener("input", filtrarLibros);
 
@@ -233,10 +238,10 @@ async function getDetalleLibro(isbn) {
 async function mostrarDetalleLibro(isbn) {
   const modal = document.getElementById("bookDetail");
   var libro = await getDetalleLibro(isbn);
-  libro = libro[0]
+  if (!libro) return 
 
   console.log("Detalle del libro:", libro);
-  if (!libro) return alert("Libro no encontrado");
+  
 
   modal.querySelector(".book-cover-lg").src = libro.portada_url || "29302.png";
   modal.querySelector(".book-info h3").textContent = libro.titulo;
