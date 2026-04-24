@@ -241,8 +241,11 @@ async function mostrarDetalleLibro(isbn) {
   if (!libro) return 
 
   console.log("Detalle del libro:", libro);
-  
+  modal.querySelector(".rating").innerHTML = "";
 
+
+  modal.querySelector(".rating").innerHTML += "★ ".repeat(Math.round(libro.puntuacion));
+  modal.querySelector(".rating").innerHTML += "☆ ".repeat(5 - Math.round(libro.puntuacion));
   modal.querySelector(".book-cover-lg").src = libro.portada_url || "29302.png";
   modal.querySelector(".book-info h3").textContent = libro.titulo;
   modal.querySelector(".book-info .author").textContent = libro.autor;
@@ -250,7 +253,11 @@ async function mostrarDetalleLibro(isbn) {
   modal.querySelector(".book-info .pages").innerHTML = `<strong>Páginas:</strong> ${libro.paginas}` || "";
   modal.querySelector(".book-info .genre").innerHTML = `<strong>Género:</strong> ${libro.genero}` || "";
   modal.querySelector(".book-info .languaje").innerHTML = `<strong>Idioma:</strong> ${libro.idioma}` || "";
+  modal.querySelector(".book-info .saga").innerHTML = `<strong>Saga:</strong> ${libro.saga}` || "";
+  modal.querySelector(".book-info .review").innerHTML = `<strong>Reseña:</strong> ${libro.resena}` || "";
+  modal.querySelector(".book-info .shelf").innerHTML = `<strong>Estante:</strong> ${libro.estante}` || "";
   modal.classList.remove("modal-hidden");
+
 
   
 }
