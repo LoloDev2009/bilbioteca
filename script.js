@@ -72,6 +72,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("buscador").addEventListener("input", filtrarLibros);
 
   addBook.addEventListener("click", (e) => {
+    deshabilitarFormulario();
+    document.getElementById("form-grid").style.display = 'none'
+    document.getElementById("tituloForm").textContent = "Agregar libro"
     document.getElementById("manualForm").classList.add("active");
   })
 
@@ -310,6 +313,8 @@ document.getElementById("editDetailBtn").addEventListener("click", () => {
 function openManualForm(detail) {
     const modal = document.getElementById("detailForm");
     const form = document.getElementById("añadirDetalle");
+    const formGrid = document.getElementById("form-grid")
+    const tituloForm = document.getElementById("tituloForm")
 
     // cargar datos
     document.getElementById("detailTitle").value = detail.titulo || "";
@@ -345,7 +350,11 @@ function openManualForm(detail) {
         };
       postDetail(detalleDevolver).then(success => {
         if (success) {
+          deshabilitarFormulario();
+          formGrid.style.display = 'none'
+          tituloForm.textContent = "Agregar libro"
           modal.classList.remove("active");
+          
           mostrarDetalleLibro(detail.isbn); // recargar detalles
         } else {
           alert("Error al guardar detalles");
