@@ -88,8 +88,13 @@ document.addEventListener("DOMContentLoaded", () => {
     deshabilitarFormulario()
   })
 
-  btnEditDetail.addEventListener("click", (e) =>{
-    editDetail()
+  btnEditDetail.addEventListener("click", async (e) =>{
+    const libro = await getDetalleLibro(document.getElementById("isbnBuscador").value);
+    currentDetail = libro;
+    console.log(currentDetail)
+    openManualForm(currentDetail);
+    document.getElementById("manualForm").classList.remove("active");
+    deshabilitarFormulario()
   })
   let selectedId = null;
 
@@ -211,6 +216,9 @@ function habilitarFormulario(tipo){
   if(tipo == "edit"){
     btnBorrar.style.display = 'block'
     btnCancelar.style.display = 'none'
+  }else if(tipo == "detail"){
+    btnBorrar.style.display = 'block'
+    btnCancelar.style.display = 'block'
   }else{
     btnBorrar.style.display = 'none'
     btnCancelar.style.display = 'block'
@@ -317,6 +325,9 @@ function openManualForm(detail) {
     document.getElementById("formReseña").value = detail.resena || "";
     document.getElementById("formPuntuacion").value = detail.puntuacion || "";
 
+    habilitarFormulario("detail");
+    document.getElementById("detailTitle").readOnly = true;
+    document.getElementById("detailAuthor").readOnly = true;
     modal.classList.add("active");
 
     form.onsubmit = async (e) => {
