@@ -267,7 +267,7 @@ async function getDetalleLibro(isbn) {
 }
 
 async function postDetail(detalleDevolver) {
-  const res = await fetch(`http://127.0.0.1:3000/api/libro/detalle`, {
+  const res = await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/detalle`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(detalleDevolver)
