@@ -38,16 +38,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnEditDetail = document.getElementById("btnEditDetail");
   const tbody = document.getElementById("libros");
   const exitDetail = document.getElementById("bookDetail");
+  const sidebar = document.getElementById("sidebar");
+  const toggleBtn = document.getElementById("toggleSidebar");
+  const btnDelDetail = document.getElementById("btnDelDetail");
+  const btnCancelDetail = document.getElementById("btnCancelDetail");
 
-  exitDetail.addEventListener("dbclick", () => {
-    document.getElementById("bookDetail").classList.add("modal-hidden");
+  btnCancelDetail.addEventListener("click", () => {
+    document.getElementById("detailForm").classList.remove("active");
+  });
+  btnDelDetail.addEventListener("click", () => {
+    if (!currentDetail) return;
+    deleteDetail(currentDetail.isbn).then(() => {
+      document.getElementById("detailForm").classList.remove("active");
+    });
+  });
+
+  toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+  });
+
+  document.querySelectorAll(".sidebar-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+          document.querySelector(".sidebar-item.active")?.classList.remove  ("active");
+          btn.classList.add("active");
+      });
+  });
+  document.getElementById("bookDetail").addEventListener("click", (e) => {
+    if (e.target.id === "bookDetail") {
+        e.currentTarget.classList.remove("active");
+    }
   });
 
   document.getElementById("buscador").addEventListener("input", filtrarLibros);
 
   addBook.addEventListener("click", (e) => {
-    const form = document.getElementById("manualForm");
-    form.style.display = "flex";
+    document.getElementById("manualForm").classList.add("active");
   })
 
   btnBuscarIsbn.addEventListener("click", (e) =>{
@@ -59,8 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   btnCancel.addEventListener("click", (e) =>{
-    const pestaña = document.getElementById("manualForm");
-    pestaña.style.display = "none";
+    document.getElementById("manualForm").classList.remove("active");
     deshabilitarFormulario()
   })
 
@@ -100,8 +124,7 @@ async function deleteBook() {
       method: "DELETE"
     });
 
-    document.getElementById("manualForm").style.display = "none";
-    deshabilitarFormulario();
+    document.getElementById("manualForm").classList.remove("active");
     cargarLibros();
 
   } catch (err) {
@@ -110,8 +133,6 @@ async function deleteBook() {
 }
 
 async function searchIsbn(){
-  const pestaña = document.getElementById("manualForm");
-
   const form = document.getElementById('añadirLibro')
   const tituloForm = document.getElementById('tituloForm')
   const codigo = document.getElementById("isbnBuscador")
@@ -166,7 +187,7 @@ async function searchIsbn(){
       })
 
       if (res.ok){
-        pestaña.style.display = "none";
+        document.getElementById("manualForm").classList.remove("active");
         deshabilitarFormulario()
         cargarLibros()
       }else{alert(`Error al guardar el libro: ${titulo.value}`);}
@@ -235,33 +256,103 @@ async function getDetalleLibro(isbn) {
   return await res.json();
 }
 
+async function postDetail(detalleDevolver) {
+  const res = await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/detalle`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(detalleDevolver)
+  });
+  return res.ok;
+};
+
+
 async function mostrarDetalleLibro(isbn) {
   const modal = document.getElementById("bookDetail");
   var libro = await getDetalleLibro(isbn);
   if (!libro) return 
 
-  console.log("Detalle del libro:", libro);
+  currentDetail = libro;
   modal.querySelector(".rating").innerHTML = "";
 
 
   modal.querySelector(".rating").innerHTML += "★ ".repeat(Math.round(libro.puntuacion));
   modal.querySelector(".rating").innerHTML += "☆ ".repeat(5 - Math.round(libro.puntuacion));
   modal.querySelector(".book-cover-lg").src = libro.portada_url || "29302.png";
-  modal.querySelector(".book-info h3").textContent = libro.titulo;
+  modal.querySelector(".book-info h2").textContent = libro.titulo;
   modal.querySelector(".book-info .author").textContent = libro.autor;
   modal.querySelector(".book-info .description").textContent = libro.descripcion || "Sin descripción";
-  modal.querySelector(".book-info .pages").innerHTML = `<strong>Páginas:</strong> ${libro.paginas}` || "";
-  modal.querySelector(".book-info .genre").innerHTML = `<strong>Género:</strong> ${libro.genero}` || "";
-  modal.querySelector(".book-info .languaje").innerHTML = `<strong>Idioma:</strong> ${libro.idioma}` || "";
-  modal.querySelector(".book-info .saga").innerHTML = `<strong>Saga:</strong> ${libro.saga}` || "";
-  modal.querySelector(".book-info .review").innerHTML = `<strong>Reseña:</strong> ${libro.resena}` || "";
-  modal.querySelector(".book-info .shelf").innerHTML = `<strong>Estante:</strong> ${libro.estante}` || "";
-  modal.classList.remove("modal-hidden");
+  modal.querySelector(".meta-grid #detailPages").innerHTML = libro.paginas;
+  modal.querySelector(".meta-grid #detailGenre").innerHTML = libro.genero;
+  modal.querySelector(".meta-grid #detailLang").innerHTML = libro.idioma;
+  modal.querySelector(".meta-grid #detailSaga").innerHTML = libro.saga;
+  modal.querySelector(".meta-grid #detailShelf").innerHTML = libro.estante;
 
-
-  
+  modal.querySelector(".review-box #detailReview").innerHTML = libro.resena;
+  modal.classList.add("active");
 }
 
+let currentDetail = null;
+
+document.getElementById("editDetailBtn").addEventListener("click", () => {
+    if (!currentDetail) return;
+    document.getElementById("bookDetail").classList.remove("active");
+    openManualForm(currentDetail);
+});
+
+function openManualForm(detail) {
+    const modal = document.getElementById("detailForm");
+    const form = document.getElementById("añadirDetalle");
+
+    // cargar datos
+    document.getElementById("detailTitle").value = detail.titulo || "";
+    document.getElementById("detailAuthor").value = detail.autor || "";
+
+    // detail fields
+    document.getElementById("formDescripcion").value = detail.descripcion || "";
+    document.getElementById("formGenero").value = detail.genero || "";
+    document.getElementById("formIdioma").value = detail.idioma || "";
+    document.getElementById("formPaginas").value = detail.paginas || "";
+    document.getElementById("formEstante").value = detail.estante || "";
+    document.getElementById("formSaga").value = detail.saga || "";
+    document.getElementById("formReseña").value = detail.resena || "";
+    document.getElementById("formPuntuacion").value = detail.puntuacion || "";
+
+    modal.classList.add("active");
+
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        const detalleDevolver = {
+            libro_id: detail.libro_id,
+            descripcion: document.getElementById("formDescripcion").value,
+            genero: document.getElementById("formGenero").value,
+            idioma: document.getElementById("formIdioma").value,
+            paginas: document.getElementById("formPaginas").value,
+            estante: document.getElementById("formEstante").value,
+            saga: document.getElementById("formSaga").value,
+            resena: document.getElementById("formReseña").value,
+            puntuacion: document.getElementById("formPuntuacion").value
+        };
+      postDetail(detalleDevolver).then(success => {
+        if (success) {
+          modal.classList.remove("active");
+          mostrarDetalleLibro(detail.isbn); // recargar detalles
+        } else {
+          alert("Error al guardar detalles");
+        };
+    });
+}};
+
+async function deleteDetail(isbn) {
+  try {
+    await apiFetch(`https://biblioteca-back-315x.onrender.com/api/libro/detalle?isbn=${isbn}`, {
+      method: "DELETE"
+    });
+    return true;
+  } catch (err) {
+    handleError(err);
+    return false;
+  }
+};
 // ===== NO MODIFICAR CODIGO AL PEDO!! ===
 
 // ===== Cargar lista de libros =====
@@ -350,18 +441,3 @@ function cargarSidebar() {
 }
 
 cargarLibros();
-
-
-const openTab = document.getElementById("openCustomTab");
-const modalTab = document.getElementById("customTabModal");
-const closeTab = document.getElementById("closeCustomTab");
-
-if (openTab && modalTab && closeTab) {
-    openTab.addEventListener("click", () => {
-        modalTab.classList.remove("modal-hidden");
-    });
-
-    closeTab.addEventListener("click", () => {
-        modalTab.classList.add("modal-hidden");
-    });
-}

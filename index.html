@@ -8,14 +8,26 @@
 </head>
 
 <body>
-<div class="layout">
-    <!-- TODO tu contenido actual (header + main) queda acá adentro -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            📚 Biblioteca
+        </div>
+    
+        <nav class="sidebar-nav">
+            <button class="sidebar-item active">Libros</button>
+            <button class="sidebar-item">Estadísticas</button>
+            <button class="sidebar-item" id="openCustomTab">Extra</button>
+        </nav>
+    
+        <button class="sidebar-toggle" id="toggleSidebar">☰</button>
+    </aside>
 
-<header class="app-header">
-    <h1 class="app-title">Gestión de Biblioteca</h1>
-</header>
+    <div class="app">
+        <header class="app-header">
+            <h1 class="app-title">Gestión de Biblioteca</h1>
+        </header>
 
-<main class="container">
+    <main class="container">
 
     <!-- Barra de controles -->
     <section class="controls">
@@ -49,8 +61,9 @@
 
 </main>
 </div>
+
 <!-- Modal agregar libro -->
-<section class="modal modal-hidden" aria-hidden="true" id="manualForm">
+<section class="modal" aria-hidden="true" id="manualForm">
     <div class="modal-content">
         <header class="modal-header">
             <h2 id="tituloForm">Agregar libro</h2>
@@ -117,58 +130,77 @@
 
     </div>
 </section>
-
-<!-- Modal detalle libro -->
-<section class="modal modal-hidden" aria-hidden="true" id="bookDetail">
-    <div class="modal-content modal-card">
-        <a href="#" class="close-btn" id="closeDetail">&times;</a>
-        <img src="" alt="Portada libro" class="book-cover-lg">
-<!-- Book info author, description, genre, language, pages, review, saga, rating -->
-        <div class="book-info">
-
-            <h3>El nombre del viento</h3>
-            <p class="author">Patrick Rothfuss</p>
-            <p class="description">
-                Una novela de fantasía épica que narra la vida de Kvothe,
-                un personaje legendario lleno de misterio.
-            </p>
-            <p class="genre"><strong>Género:</strong> Fantasía</p>
-            <p class="languaje"><strong>Idioma:</strong> Español</p>
-            <p class="pages"><strong>Páginas:</strong> 662</p>
-            <p class="shelf"><strong>Estantería:</strong> 662</p>
-            <p class="saga"><strong>Saga:</strong> The Kingkiller Chronicle</p>
-            <p class="review"><strong>Reseña:</strong> Una novela de fantasía épica que narra la vida de Kvothe, un personaje legendario lleno de misterio.</p>
-
-
-            <div class="rating">
-                ★ ★ ★ ★ ★ ☆ ☆ ☆
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Modal Sidebar Tab -->
-<section class="modal modal-hidden" id="customTabModal">
+<section class="modal" aria-hidden="true" id="detailForm">
     <div class="modal-content">
         <header class="modal-header">
-            <h2>Mi pestaña</h2>
+            <h2 id="tituloForm">Detalles libro</h2>
         </header>
 
-        <div class="form">
-            <!-- PERSONALIZÁ ACÁ -->
-            <p>Este es un espacio editable para tu funcionalidad.</p>
-        </div>
+        <form class="form" id="añadirDetalle">
+            <div>
+                <label>Título<input type="text"  id="detailTitle" class="input manualForm" placeholder="Titulo" readonly></label>
+                <label>Autor<input type="text"  id="detailAuthor" class="input manualForm" placeholder="Autor" readonly></label>
+                <hr class="form-divider" >
+                <!-- Resto del formulario -->
+                <div class="form-grid" >
+                    <label>Descripción<input type="text"  id="formDescripcion" class="input manualForm" placeholder="Descripción" ></label>
+                    <label>Genero<input type="text"  id="formGenero" class="input manualForm" placeholder="Género" ></label>
+                    <label>Idioma<input type="text"  id="formIdioma" class="input manualForm" placeholder="Idioma" ></label>
+                    <label>Paginas<input type="text"  id="formPaginas" class="input manualForm" placeholder="Páginas" ></label>
+                    <label>Estantería<input type="text"  id="formEstante" class="input manualForm" placeholder="Estantería" ></label>
+                    <label>Saga<input type="text"  id="formSaga" class="input manualForm" placeholder="Saga" ></label>
+                    <label>Reseña<input type="text"  id="formReseña" class="input manualForm" placeholder="Reseña" ></label>
+                    <label>Puntuación<input type="number" min="0" max="5" id="formPuntuacion" class="input manualForm" placeholder="Puntuación" ></label>
+                </div>
+                <footer class="modal-footer">
+                    <button type="button" id="btnDelDetail" class="btn btn-danger">Eliminar</button>
+                    <button type="button" id="btnCancelDetail" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </footer>
+            </div>
+        </form>
+        
 
-        <footer class="modal-footer">
-            <button class="btn btn-secondary" id="closeCustomTab">Cerrar</button>
-        </footer>
     </div>
 </section>
+
+    <!-- MODAL DETALLE (NUEVO) -->
+    <section class="modal" id="bookDetail">
+        <div class="modal-content book-modal">
+            <button class="close-btn" id="closeDetail">✕</button>
+
+            <div class="book-layout">
+                <img src="" class="book-cover-lg" id="detailCover" />
+
+                <div class="book-info">
+                    <h2 id="detailTitle">Título</h2>
+                    <p class="author" id="detailAuthor">Autor</p>
+
+                    <p class="description" id="detailDesc"></p>
+
+                    <div class="meta-grid">
+                        <span><strong>Género:</strong> <span id="detailGenre"></span></span>
+                        <span><strong>Idioma:</strong> <span id="detailLang"></span></span>
+                        <span><strong>Páginas:</strong> <span id="detailPages"></span></span>
+                        <span><strong>Estantería:</strong> <span id="detailShelf"></span></span>
+                        <span><strong>Saga:</strong> <span id="detailSaga"></span></span>
+                    </div>
+
+                    <div class="review-box">
+                        <strong>Reseña</strong>
+                        <p id="detailReview"></p>
+                    </div>
+
+                    <div class="rating" id="detailRating"></div>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="editDetailBtn">Editar</button>
+        </div>
+    </section>
+</body>
 <script src="script.js"></script>
 
 </body>
-<!-- Sidebar -->
-<aside class="sidebar">
-    <nav class="sidebar-nav"></nav>
-</aside>
+
 
 </html>
