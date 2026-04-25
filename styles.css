@@ -394,6 +394,14 @@ label {
     font-size: 0.9rem;
 }
 
+#editDetailBtn {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 12px;
+    right: 12px;
+}
 .review-box {
     background: #f1f5f9;
     padding: 1rem;
@@ -633,4 +641,5 @@ label {
 
 .white-space-preline {
   white-space: pre-line;
+  margin-bottom: 0.5rem;
 }

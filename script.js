@@ -284,8 +284,8 @@ async function mostrarDetalleLibro(isbn) {
   modal.querySelector(".rating").innerHTML = "";
   
 
-  modal.querySelector(".rating").innerHTML += "★ ".repeat(Math.round(libro.puntuacion));
-  modal.querySelector(".rating").innerHTML += "☆ ".repeat(5 - Math.round(libro.puntuacion));
+  modal.querySelector(".rating").innerHTML += "★ ".repeat(Math.round(libro.puntuacion)) || "";
+  modal.querySelector(".rating").innerHTML += "☆ ".repeat(5 - Math.round(libro.puntuacion)) || "";
   modal.querySelector(".book-cover-lg").src = libro.portada_url || "29302.png";
   modal.querySelector(".book-info h2").textContent = libro.titulo;
   modal.querySelector(".book-info .author").textContent = libro.autor;
