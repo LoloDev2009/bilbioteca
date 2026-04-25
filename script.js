@@ -280,9 +280,8 @@ async function mostrarDetalleLibro(isbn) {
   const modal = document.getElementById("bookDetail");
   var libro = await getDetalleLibro(isbn);
   if (!libro) return 
-  const descripcionReal = libro.descripcion.replace(/\\n/g, "\n\n") || "Sin descripción";
+  // const descripcionReal = libro.descripcion.replace(/\\n/g, "\n\n") || "Sin descripción";
 
-  console.log(descripcionReal)
   currentDetail = libro;
   modal.querySelector(".rating").innerHTML = "";
 
@@ -292,7 +291,7 @@ async function mostrarDetalleLibro(isbn) {
   modal.querySelector(".book-cover-lg").src = libro.portada_url || "29302.png";
   modal.querySelector(".book-info h2").textContent = libro.titulo;
   modal.querySelector(".book-info .author").textContent = libro.autor;
-  modal.querySelector(".book-info .description").innerText = descripcionReal;
+  modal.querySelector(".book-info .description").innerText = libro.descripcion || "Sin descripción";
   modal.querySelector(".meta-grid #detailPages").innerHTML = libro.paginas;
   modal.querySelector(".meta-grid #detailGenre").innerHTML = libro.genero;
   modal.querySelector(".meta-grid #detailLang").innerHTML = libro.idioma;
