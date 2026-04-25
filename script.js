@@ -97,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(currentDetail)
     openManualForm(currentDetail);
     document.getElementById("manualForm").classList.remove("active");
-    deshabilitarFormulario()
   })
   let selectedId = null;
 
@@ -268,7 +267,7 @@ async function getDetalleLibro(isbn) {
 }
 
 async function postDetail(detalleDevolver) {
-  const res = await fetch(`https://biblioteca-back-315x.onrender.com/api/libro/detalle`, {
+  const res = await fetch(`http://127.0.0.1:3000/api/libro/detalle`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(detalleDevolver)
@@ -315,6 +314,7 @@ function openManualForm(detail) {
     const form = document.getElementById("añadirDetalle");
     const formGrid = document.getElementById("form-grid")
     const tituloForm = document.getElementById("tituloForm")
+    const campos = document.querySelectorAll('.manualForm')
 
     // cargar datos
     document.getElementById("detailTitle").value = detail.titulo || "";
@@ -330,7 +330,10 @@ function openManualForm(detail) {
     document.getElementById("formReseña").value = detail.resena || "";
     document.getElementById("formPuntuacion").value = detail.puntuacion || "";
 
-    habilitarFormulario("detail");
+    for(var i = 0; i < campos.length; i++){
+      campos[i].readOnly = false;
+      campos[i].disabled = false;
+    }
     document.getElementById("detailTitle").readOnly = true;
     document.getElementById("detailAuthor").readOnly = true;
     modal.classList.add("active");
@@ -338,7 +341,7 @@ function openManualForm(detail) {
     form.onsubmit = async (e) => {
         e.preventDefault();
         const detalleDevolver = {
-            libro_id: detail.libro_id,
+            libro_id: detail.id,
             descripcion: document.getElementById("formDescripcion").value,
             genero: document.getElementById("formGenero").value,
             idioma: document.getElementById("formIdioma").value,
@@ -348,6 +351,7 @@ function openManualForm(detail) {
             resena: document.getElementById("formReseña").value,
             puntuacion: document.getElementById("formPuntuacion").value
         };
+      console.log(detalleDevolver)
       postDetail(detalleDevolver).then(success => {
         if (success) {
           deshabilitarFormulario();
