@@ -458,7 +458,7 @@ async function cargarSidebar() {
   opciones.forEach(opcion => {
     const btn = document.createElement("button");
     btn.classList.add("sidebar-item");
-    btn.id = opcion.data;
+    btn.id = opcion.code;
     btn.textContent = opcion.nombre;
     sidebar.appendChild(btn);
   });
