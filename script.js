@@ -446,14 +446,21 @@ function filtrarLibros() {
   mostrarLibros(librosFiltrados);
 }
 
-function cargarSidebar() {
-  const sidebar = document.querySelector(".sidebar-nav");
-  const opciones = [
-    { nombre: "Biblioteca", id: "biblioteca" },
-    { nombre: "Data", id: "data" },
-    { nombre: "Personalizar", id: "personalizar" }
-  ];
+async function getSidebar() {
+  try {
+    const res = await fetch("https://biblioteca-back-315x.onrender.com/api/sidebar");
+    const opciones = await res.json();
+    return opciones;
+  } catch (err) {
+    console.error("Error al cargar el sidebar:", err);
+    return [];
+  }
+}
 
+async function cargarSidebar() {
+  const sidebar = document.querySelector(".sidebar-nav");
+  const opciones = await getSidebar(); // viene del JSON importado al inicio
+  
   opciones.forEach(opcion => {
     const btn = document.createElement("button");
     btn.classList.add("sidebar-item");
