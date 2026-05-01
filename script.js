@@ -57,12 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sidebar.classList.toggle("collapsed");
   });
 
-  document.querySelectorAll(".sidebar-item").forEach(btn => {
-      btn.addEventListener("click", () => {
-          document.querySelector(".sidebar-item.active")?.classList.remove  ("active");
-          btn.classList.add("active");
-      });
-  });
   document.getElementById("bookDetail").addEventListener("click", (e) => {
     if (e.target.id === "bookDetail") {
         e.currentTarget.classList.remove("active");
@@ -464,9 +458,16 @@ async function cargarSidebar() {
   opciones.forEach(opcion => {
     const btn = document.createElement("button");
     btn.classList.add("sidebar-item");
-    btn.id = opcion.id;
+    btn.id = opcion.data;
     btn.textContent = opcion.nombre;
     sidebar.appendChild(btn);
+  });
+  document.querySelectorAll(".sidebar-item")[0].classList.add("active"); // marcar el primero como activo
+  document.querySelectorAll(".sidebar-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+          document.querySelector(".sidebar-item.active")?.classList.remove  ("active");
+          btn.classList.add("active");
+      });
   });
 }
 
